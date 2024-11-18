@@ -45,7 +45,7 @@ class ProductsNotifier extends StateNotifier<PendingProductsStatus> {
       await productsRemoteRepository.aproveOrDeclineProduct(
           id: id, isApproved: isAccepted);
       reviewedProductsNotifier.addProduct(
-        state.products!.firstWhere((element) => element.id == id),
+        state.products!.firstWhere((element) => element.isarId == id),
       );
       deleteProduct(id);
       return true;
@@ -56,13 +56,13 @@ class ProductsNotifier extends StateNotifier<PendingProductsStatus> {
 
   void deleteProduct(int id) {
     state = state.copyWith(
-        products: state.products!.where((item) => item.id != id).toList());
+        products: state.products!.where((item) => item.isarId != id).toList());
   }
 
   void changeStatus(int id) {
     state = state.copyWith(
         products: state.products?.map((product) {
-      if (product.id == id) {
+      if (product.isarId == id) {
         final status = (product.status == ProductStatus.pending)
             ? ProductStatus.accepted
             : product.status == ProductStatus.accepted

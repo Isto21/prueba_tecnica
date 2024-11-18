@@ -38,6 +38,7 @@ class FavoritesNotifier extends StateNotifier<List<Product>> {
   Future<void> deleteProduct(int productId) async {
     try {
       await localRepository.deleteProduct(productId);
+      await getFavorites();
     } catch (e) {
       rethrow;
     }

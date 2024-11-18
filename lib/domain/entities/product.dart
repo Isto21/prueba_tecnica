@@ -49,7 +49,6 @@ String statusToString(ProductStatus status) {
 @collection
 class Product {
   Id isarId = Isar.autoIncrement;
-  int id;
   String title;
   String description;
   String price;
@@ -59,7 +58,7 @@ class Product {
   String material;
 
   Product({
-    required this.id,
+    required this.isarId,
     required this.title,
     required this.description,
     required this.price,
@@ -69,19 +68,19 @@ class Product {
   });
 
   Product copyWith({
-    int? id,
+    Id? isarId,
     String? title,
-    String? descritpion,
+    String? description,
     String? price,
-    ProductStatus? status,
     bool? isReviewed,
     String? material,
+    ProductStatus? status,
   }) {
     return Product(
       status: status ?? this.status,
-      id: id ?? this.id,
+      isarId: isarId ?? this.isarId,
       title: title ?? this.title,
-      description: descritpion ?? description,
+      description: description ?? this.description,
       price: price ?? this.price,
       isReviewed: isReviewed ?? this.isReviewed,
       material: material ?? this.material,

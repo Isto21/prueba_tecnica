@@ -6,7 +6,7 @@ class Mappers {
       productsModel
           .map((productModel) => Product(
                 description: productModel.descritpion,
-                id: productModel.id,
+                isarId: productModel.id,
                 status: parseProductStatus(productModel.status),
                 isReviewed: productModel.isReviewed,
                 material: productModel.material,

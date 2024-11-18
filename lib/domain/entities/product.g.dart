@@ -22,34 +22,29 @@ const ProductSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'id': PropertySchema(
-      id: 1,
-      name: r'id',
-      type: IsarType.long,
-    ),
     r'isReviewed': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'isReviewed',
       type: IsarType.bool,
     ),
     r'material': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'material',
       type: IsarType.string,
     ),
     r'price': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'price',
       type: IsarType.string,
     ),
     r'status': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'status',
       type: IsarType.byte,
       enumMap: _ProductstatusEnumValueMap,
     ),
     r'title': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'title',
       type: IsarType.string,
     )
@@ -88,12 +83,11 @@ void _productSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.description);
-  writer.writeLong(offsets[1], object.id);
-  writer.writeBool(offsets[2], object.isReviewed);
-  writer.writeString(offsets[3], object.material);
-  writer.writeString(offsets[4], object.price);
-  writer.writeByte(offsets[5], object.status.index);
-  writer.writeString(offsets[6], object.title);
+  writer.writeBool(offsets[1], object.isReviewed);
+  writer.writeString(offsets[2], object.material);
+  writer.writeString(offsets[3], object.price);
+  writer.writeByte(offsets[4], object.status.index);
+  writer.writeString(offsets[5], object.title);
 }
 
 Product _productDeserialize(
@@ -104,15 +98,14 @@ Product _productDeserialize(
 ) {
   final object = Product(
     description: reader.readString(offsets[0]),
-    id: reader.readLong(offsets[1]),
-    isReviewed: reader.readBool(offsets[2]),
-    material: reader.readString(offsets[3]),
-    price: reader.readString(offsets[4]),
-    status: _ProductstatusValueEnumMap[reader.readByteOrNull(offsets[5])] ??
+    isReviewed: reader.readBool(offsets[1]),
+    isarId: id,
+    material: reader.readString(offsets[2]),
+    price: reader.readString(offsets[3]),
+    status: _ProductstatusValueEnumMap[reader.readByteOrNull(offsets[4])] ??
         ProductStatus.accepted,
-    title: reader.readString(offsets[6]),
+    title: reader.readString(offsets[5]),
   );
-  object.isarId = id;
   return object;
 }
 
@@ -126,17 +119,15 @@ P _productDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
-    case 2:
       return (reader.readBool(offset)) as P;
+    case 2:
+      return (reader.readString(offset)) as P;
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
-    case 5:
       return (_ProductstatusValueEnumMap[reader.readByteOrNull(offset)] ??
           ProductStatus.accepted) as P;
-    case 6:
+    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -371,58 +362,6 @@ extension ProductQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'description',
         value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> idEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> idGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> idLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> idBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
       ));
     });
   }
@@ -953,18 +892,6 @@ extension ProductQuerySortBy on QueryBuilder<Product, Product, QSortBy> {
     });
   }
 
-  QueryBuilder<Product, Product, QAfterSortBy> sortById() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterSortBy> sortByIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
-    });
-  }
-
   QueryBuilder<Product, Product, QAfterSortBy> sortByIsReviewed() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isReviewed', Sort.asc);
@@ -1037,18 +964,6 @@ extension ProductQuerySortThenBy
   QueryBuilder<Product, Product, QAfterSortBy> thenByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterSortBy> thenById() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterSortBy> thenByIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
     });
   }
 
@@ -1134,12 +1049,6 @@ extension ProductQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Product, Product, QDistinct> distinctById() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'id');
-    });
-  }
-
   QueryBuilder<Product, Product, QDistinct> distinctByIsReviewed() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isReviewed');
@@ -1185,12 +1094,6 @@ extension ProductQueryProperty
   QueryBuilder<Product, String, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
-    });
-  }
-
-  QueryBuilder<Product, int, QQueryOperations> idProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'id');
     });
   }
 

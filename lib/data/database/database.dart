@@ -29,7 +29,7 @@ class IsarService extends LocalRepository {
   Future<bool> isFavorite(int productId) async {
     final isar = await _db;
     final Product? fav =
-        await isar.products.filter().idEqualTo(productId).findFirst();
+        await isar.products.filter().isarIdEqualTo(productId).findFirst();
     return fav != null;
   }
 
@@ -37,7 +37,7 @@ class IsarService extends LocalRepository {
   Future<void> toggleFavorite(Product product) async {
     final isar = await _db;
     final favorite =
-        await isar.products.filter().idEqualTo(product.id).findFirst();
+        await isar.products.filter().isarIdEqualTo(product.isarId).findFirst();
     if (favorite != null) {
       isar.writeTxnSync(() => isar.products.deleteSync(favorite.isarId));
     } else {

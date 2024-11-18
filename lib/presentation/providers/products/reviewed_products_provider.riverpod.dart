@@ -60,7 +60,8 @@ class ReviewedProductsNotifier extends StateNotifier<ReviewedProductsStatus> {
     try {
       await productsRemoteRepository.deleteProduct(id);
       state = state.copyWith(
-          products: state.products!.where((item) => item.id != id).toList());
+          products:
+              state.products!.where((item) => item.isarId != id).toList());
       if (state.products!.isEmpty) {
         state = state.copyWith(errorCode: 404);
       }

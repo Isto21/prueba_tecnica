@@ -15,14 +15,14 @@ class FavoritesButton extends ConsumerWidget {
         onPressed: () async {
           await ref.read(favProvider.notifier).toggleFav(product);
           ref.invalidate(favProvider);
-          ref.invalidate(isFavoriteProvider(product.id));
+          ref.invalidate(isFavoriteProvider(product.isarId));
         },
         icon: (isFav.when(
             data: (data) {
               return (!data)
                   ? const Icon(
                       Icons.favorite_border,
-                      color: Colors.white,
+                      color: Colors.red,
                       size: 25,
                     )
                   : const Icon(

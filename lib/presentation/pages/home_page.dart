@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prueba_tecnica/config/constants/consts.dart';
 import 'package:prueba_tecnica/presentation/providers/theme/index_page.riverpod.dart';
 import 'package:prueba_tecnica/presentation/providers/theme/is_dark_theme_provider.dart';
+import 'package:prueba_tecnica/presentation/views/favorites_view.dart';
 import 'package:prueba_tecnica/presentation/views/home_view.dart';
 import 'package:prueba_tecnica/presentation/views/reviews_view.dart';
-import 'package:prueba_tecnica/presentation/views/settings.dart';
 
 const List<Widget> _pages = [
   HomeView(),
@@ -22,22 +22,29 @@ class HomePage extends ConsumerWidget {
     final indexPage = ref.watch(indexPageProvider);
     return Scaffold(
       appBar: AppBar(
-        title:
-            (indexPage != 2) ? const Text(ApkConsts.apkName) : Text("Ajustes"),
+        title: const Text(ApkConsts.apkName),
         actions: [
           SizedBox(width: 12),
-          (indexPage != 2)
-              ? IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    (theme == Consts.darkMode)
-                        ? Icons.dark_mode
-                        : (theme == Consts.lightMode)
-                            ? Icons.light_mode
-                            : Icons.auto_mode,
-                  ),
-                )
-              : SizedBox(),
+          IconButton(
+            onPressed: () => ref.read(isDarkThemeProvider.notifier).update(
+              (state) {
+                if (state == Consts.darkMode) {
+                  return Consts.autoMode;
+                } else if (state == Consts.lightMode) {
+                  return Consts.darkMode;
+                } else {
+                  return Consts.lightMode;
+                }
+              },
+            ),
+            icon: Icon(
+              (theme == Consts.darkMode)
+                  ? Icons.dark_mode
+                  : (theme == Consts.lightMode)
+                      ? Icons.light_mode
+                      : Icons.auto_mode,
+            ),
+          ),
           SizedBox(width: 12),
         ],
       ),
@@ -50,7 +57,7 @@ class HomePage extends ConsumerWidget {
             BottomNavigationBarItem(
                 icon: Icon(Icons.playlist_add_check), label: "Revisados"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: "Ajustes")
+                icon: Icon(Icons.favorite_border), label: "Favoritos")
           ]),
     );
   }

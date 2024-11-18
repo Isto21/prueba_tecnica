@@ -146,7 +146,7 @@ class ProductCard extends ConsumerWidget {
                                 final bool editProduct = await ref
                                     .read(productsProvider.notifier)
                                     .acceptOrDeclineproducts(
-                                        productsP.products![index].id,
+                                        productsP.products![index].isarId,
                                         productsP.products![index].status ==
                                                 ProductStatus.accepted
                                             ? true
@@ -181,7 +181,7 @@ class ProductCard extends ConsumerWidget {
                     statusToString(productsP.products![index].status)),
                 onChanged: (value) =>
                     ref.read(productsProvider.notifier).changeStatus(
-                          productsP.products![index].id,
+                          productsP.products![index].isarId,
                         ),
               ),
               Row(
