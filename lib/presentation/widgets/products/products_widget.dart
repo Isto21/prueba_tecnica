@@ -118,9 +118,9 @@ class ProductCard extends ConsumerWidget {
                                 final bool isDelete = await showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                          backgroundColor: Colors.white,
-                                          insetPadding: const EdgeInsets.only(
-                                              left: 10, right: 10),
+                                          insetPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 16, vertical: 12),
                                           title: const Text(
                                             'Eliminar',
                                             style: TextStyle(
@@ -130,7 +130,7 @@ class ProductCard extends ConsumerWidget {
                                               '¿Usted está seguro que desea eliminar este producto?',
                                               style: TextStyle(fontSize: 22)),
                                           actionsAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.end,
                                           actions: [
                                             OutlinedButton(
                                                 onPressed: () {
