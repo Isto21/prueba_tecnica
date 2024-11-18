@@ -39,10 +39,10 @@ class HomePage extends ConsumerWidget {
             ),
             icon: Icon(
               (theme == Consts.darkMode)
-                  ? Icons.dark_mode
+                  ? Icons.auto_mode
                   : (theme == Consts.lightMode)
-                      ? Icons.light_mode
-                      : Icons.auto_mode,
+                      ? Icons.dark_mode
+                      : Icons.light_mode,
             ),
           ),
           SizedBox(width: 12),

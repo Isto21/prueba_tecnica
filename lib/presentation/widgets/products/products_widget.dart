@@ -115,24 +115,56 @@ class ProductCard extends ConsumerWidget {
                             onPressed: () async {
                               loading(context: context);
                               try {
-                                await ref
-                                    .read(reviewedproductsProvider.notifier)
-                                    .deleteProduct(product.isarId);
-                                await ref
-                                    .read(favProvider.notifier)
-                                    .deleteProduct(product.isarId);
-                                ref.invalidate(favProvider);
-                                globalKey.currentState?.removeItem(
-                                    index,
-                                    (context, animation) => ProductCard(
-                                        globalKey: globalKey,
-                                        animation,
-                                        index: index,
-                                        product: product),
-                                    duration: Duration(milliseconds: 600));
-                                context.pop();
-                                CustomSnackbar.show(context,
-                                    text: "Producto eliminado con éxito");
+                                final bool isDelete = await showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                          backgroundColor: Colors.white,
+                                          insetPadding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          title: const Text(
+                                            'Eliminar',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          content: Text(
+                                              '¿Usted está seguro que desea eliminar este producto?',
+                                              style: TextStyle(fontSize: 22)),
+                                          actionsAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          actions: [
+                                            OutlinedButton(
+                                                onPressed: () {
+                                                  context.pop(false);
+                                                },
+                                                child: Text('Cancelar')),
+                                            FilledButton.tonal(
+                                                onPressed: () =>
+                                                    context.pop(true),
+                                                child: Text('Aceptar'))
+                                          ],
+                                        ));
+                                if (isDelete) {
+                                  await ref
+                                      .read(reviewedproductsProvider.notifier)
+                                      .deleteProduct(product.isarId);
+                                  await ref
+                                      .read(favProvider.notifier)
+                                      .deleteProduct(product.isarId);
+                                  ref.invalidate(favProvider);
+                                  globalKey.currentState?.removeItem(
+                                      index,
+                                      (context, animation) => ProductCard(
+                                          globalKey: globalKey,
+                                          animation,
+                                          index: index,
+                                          product: product),
+                                      duration: Duration(milliseconds: 600));
+                                  context.pop();
+                                  CustomSnackbar.show(context,
+                                      text: "Producto eliminado con éxito");
+                                } else {
+                                  context.pop();
+                                }
                               } catch (_) {
                                 context.pop();
                                 CustomSnackbar.show(context,
