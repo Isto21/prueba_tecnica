@@ -51,7 +51,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     child: StandardErrorPage(
                         action: () => Future.delayed(
                               Duration(
-                                seconds: 3,
+                                seconds: 5,
                               ),
                               () => ref.invalidate(productsProvider),
                             ),
