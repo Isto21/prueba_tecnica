@@ -27,8 +27,6 @@ class SettingsView extends HookConsumerWidget {
                 itemBuilder: (context, index, animation) {
                   return ProductCard(
                     product: favorites[index],
-                    globalKey: _listKey,
-                    animation,
                     index: index,
                   );
                 },

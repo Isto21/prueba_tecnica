@@ -31,7 +31,7 @@ class ProductsNotifier extends StateNotifier<PendingProductsStatus> {
       state = state.copyWith(isLoading: true);
       final products = await productsRemoteRepository.getProductsByStatus(
           page: currentPage, limit: ProductLimits.pending, isReviewed: false);
-      if (products.length < 10) {
+      if (products.length < 9) {
         currentPage = -1;
       }
       state = state.copyWith(products: products, isLoading: false);
@@ -83,7 +83,7 @@ class ProductsNotifier extends StateNotifier<PendingProductsStatus> {
     final products = await productsRemoteRepository.getProductsByStatus(
         page: currentPage, limit: ProductLimits.pending, isReviewed: false);
     if (products.isNotEmpty) {
-      state = state.copyWith(products: state.products?..addAll(products));
+      state = state.copyWith(products: [...state.products!, ...products]);
     } else {
       currentPage = -1;
     }

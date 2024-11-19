@@ -32,7 +32,6 @@ class _ReviewsViewState extends ConsumerState<ReviewsView> {
     super.dispose();
   }
 
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final reviewedProducts = ref.watch(reviewedproductsProvider);
@@ -61,11 +60,10 @@ class _ReviewsViewState extends ConsumerState<ReviewsView> {
                         icon: Icons.error,
                         firstText: "No hay productos",
                         secondText: "Por favor regrese más tarde")
-                    : AnimatedList(
-                        key: _listKey,
+                    : ListView.builder(
                         controller: _scrollController,
-                        initialItemCount: reviewedProducts.products!.length + 2,
-                        itemBuilder: (context, index, animation) {
+                        itemCount: reviewedProducts.products!.length + 2,
+                        itemBuilder: (context, index) {
                           if (index + 1 > reviewedProducts.products!.length) {
                             return (ref
                                         .read(reviewedproductsProvider.notifier)
@@ -76,8 +74,6 @@ class _ReviewsViewState extends ConsumerState<ReviewsView> {
                           }
                           return ProductCard(
                             product: reviewedProducts.products![index],
-                            globalKey: _listKey,
-                            animation,
                             index: index,
                           );
                         },
